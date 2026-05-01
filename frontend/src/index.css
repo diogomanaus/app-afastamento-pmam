@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pmam-gold text-white font-semibold px-4 py-2 rounded-lg hover:bg-pmam-gold-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply bg-white text-pmam-blue border border-pmam-blue font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors;
+  }
+  .input {
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pmam-blue focus:border-transparent;
+  }
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+  .badge-pendente    { @apply bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-aprovado    { @apply bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-reprovado   { @apply bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-em_andamento { @apply bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-concluido   { @apply bg-gray-100 text-gray-700 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-cancelado   { @apply bg-red-50 text-red-500 text-xs font-semibold px-2.5 py-1 rounded-full; }
+}
+
+/* react-datepicker overrides */
+.react-datepicker-wrapper { @apply w-full; }
+.react-datepicker__input-container input { @apply input; }
+.react-datepicker__header { background-color: #1B3060 !important; }
+.react-datepicker__current-month,
+.react-datepicker__day-name { color: white !important; }
+.react-datepicker__day--selected,
+.react-datepicker__day--in-range { background-color: #C8960C !important; }
+.react-datepicker__day--keyboard-selected { background-color: #1B3060 !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #C8960C; border-radius: 3px; }

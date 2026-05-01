@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: pmam_db
+    environment:
+      POSTGRES_DB: pmam_afastamentos
+      POSTGRES_USER: pmam_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pmam_user -d pmam_afastamentos"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  backend:
+    build: ./backend
+    container_name: pmam_backend
+    environment:
+      DATABASE_URL: postgresql://pmam_user:${DB_PASSWORD}@db:5432/pmam_afastamentos
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@pmam.am.gov.br}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@2025}
+      NODE_ENV: production
+      PORT: 3001
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: pmam_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads:
