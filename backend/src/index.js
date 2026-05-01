@@ -43,6 +43,19 @@ app.use((err, req, res, _next) => {
   res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
 });
 
+async function initSchema() {
+  const fs = require('fs');
+  const path = require('path');
+  const sqlPath = path.join(__dirname, '../init.sql');
+  if (fs.existsSync(sqlPath)) {
+    const sql = fs.readFileSync(sqlPath, 'utf8');
+    await db.query(sql);
+    console.log('✅ Schema inicializado');
+  } else {
+    console.warn('⚠️  init.sql não encontrado, pulando inicialização do schema');
+  }
+}
+
 async function migrate() {
   // Colunas do plano_ferias
   await db.query(`ALTER TABLE plano_ferias ADD COLUMN IF NOT EXISTS mes_previsto INTEGER`);
@@ -189,6 +202,7 @@ async function seedAdmin() {
 
 async function start() {
   await db.waitForDB();
+  await initSchema();
   await migrate();
   await seedAdmin();
   app.listen(PORT, () => console.log(`🚀 Backend PMAM rodando na porta ${PORT}`));
